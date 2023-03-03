@@ -6,7 +6,8 @@ Valorant Headhunter é um aplicativo que interage com a API interna do VALORANT,
 
 ## Sobre o projeto
 A linguagem de programação utilizada é Python.
-Para deixar o app mais leve e separar as responsabilidades do projeto usei minha API [OnlyTH777/Simple-FastAPI-Valorant-API](https://github.com/OnlyTH777/Simple-FastAPI-Valorant-API)
+
+Para separar as responsabilidades do projeto utilizei minha API [OnlyTH777/Simple-FastAPI-Valorant-API](https://github.com/OnlyTH777/Simple-FastAPI-Valorant-API)
 
 ## Agradecimentos
 
