@@ -8,9 +8,7 @@ The programming language used is Python.
 
 To separate project responsibilities I used my API [OnlyTH777/Simple-FastAPI-Valorant-API](https://github.com/OnlyTH777/Simple-FastAPI-Valorant-API)
 
-
 ## Thanks
-
 This project would not have been possible without
 
 - **[colinhartigan/valclient.py](https://github.com/colinhartigan/valclient.py)** API wrapper I'm currently using in the project
