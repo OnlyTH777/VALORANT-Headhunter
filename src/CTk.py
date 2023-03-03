@@ -1,10 +1,11 @@
 import customtkinter
-from instalockOOP import *
+import webbrowser
+from externalPick import *
 
-main = Main()
+externalPick = ExternalPick()
 
 
-class InitialFrame(customtkinter.CTkFrame):
+class HomeFrame(customtkinter.CTkFrame):
     def __init__(self, parent):
         super().__init__(parent)
 
@@ -12,80 +13,63 @@ class InitialFrame(customtkinter.CTkFrame):
         customtkinter.CTkLabel(master=self, text="Este projeto é um projeto em constante desenvolvimento e bugs podem aparecer no decorrer deste processo.", font=("Roboto", 16)).pack(padx=10, pady=10)
         customtkinter.CTkLabel(master=self, text="Não me responsabilizo por banimentos devido ao uso deste aplicativo.", font=("Roboto", 16)).pack(padx=10, pady=10)
 
-        if main.logado == False:
-            self.labelOpenValorant = customtkinter.CTkLabel(master=self, text="Para continuar pressione o botão abaixo com o VALORANT aberto.", font=("Roboto", 12))
+        if externalPick.logado == False:
+            self.labelOpenValorant = customtkinter.CTkLabel(master=self, text="Para que as funções funcionem pressione o botão abaixo com o VALORANT aberto.", font=("Roboto", 12))
             self.labelOpenValorant.pack(padx=10, pady=10)
 
-            self.buttonLogin = customtkinter.CTkButton(master=self, text="Conectar com o VALORANT", command=self.conectWithValorant)
+            self.buttonLogin = customtkinter.CTkButton(master=self, text="Conectar com o VALORANT", command=lambda: self.conectWithValorant())
             self.buttonLogin.pack(padx=10, pady=10)
 
-
     def conectWithValorant(self):
-        main.logarValorant()
-        if main.logado == True:
-            self.buttonLogin.destroy()
+        externalPick.logarValorant()
+        if externalPick.logado == True:
             self.labelOpenValorant.destroy()
+            self.buttonLogin.destroy()
 
 
 class ExternalPickFrame(customtkinter.CTkFrame):
     def __init__(self, parent):
         super().__init__(parent)
-
-        self.label = customtkinter.CTkLabel(master=self, text="Instalock System", font=("Roboto", 24))
-        self.label.pack(padx=10, pady=10)
-
+        customtkinter.CTkLabel(master=self, text="External Pick System", font=("Roboto", 24)).pack(padx=10, pady=10)
         self.agent = customtkinter.CTkOptionMenu(master=self, values=agents)
         self.agent.pack(padx=10, pady=10)
         self.agent.set("Selecione um agente")
-
-        self.buttonPick = customtkinter.CTkButton(master=self, text="Pickar", command=self.agenteskk, state="normal")
-        self.buttonPick.pack(padx=10, pady=10)
-
-    def agenteskk(self):
-        main.instalock(self.agent.get())
+        customtkinter.CTkButton(master=self, text="Pickar Agente", command=lambda: externalPick.instalock(self.agent.get())).pack(padx=10, pady=10)
 
 
 class SupportFrame(customtkinter.CTkFrame):
     def __init__(self, parent):
         super().__init__(parent)
-        customtkinter.CTkLabel(self, text="Baixou pq quis, não tem galantia").pack(padx="10", pady="10")
+        customtkinter.CTkLabel(self, text="Caso você tenha encontrado um bug abra uma issue no repositorio do projeto em meu GitHub").pack(padx="10", pady="10")
+        customtkinter.CTkLabel(self, text="Você pode entrar em contato comigo diretamente pelo meu Discord").pack(padx="10", pady="10")
+        customtkinter.CTkButton(self, text="Meu Discord", command=lambda: webbrowser.open('https://github.com/OnlyTH777')).pack(padx="10", pady="10")
+        customtkinter.CTkButton(self, text="Meu GitHub", command=lambda: webbrowser.open('https://discord.com/users/410479396084908044')).pack(padx="10", pady="10")
 
 
 class MainWindow():
     def __init__(self, master):
-
-        self.index = 0
-        self.frameList = [InitialFrame(master), ExternalPickFrame(master), SupportFrame(master)]
-
         customtkinter.set_default_color_theme("dark-blue")
-
         master.title("VALORANT Headhunter")
         master.grid_rowconfigure(0, weight=1)
         master.grid_columnconfigure(9, weight=1)
+        self.index = 0
+        self.frameList = [HomeFrame(master), ExternalPickFrame(master), SupportFrame(master)]
 
-        initialFrame = InitialFrame(master)
-        initialFrame.grid(row=0, column=1, columnspan=9, padx=20, pady=20, sticky="nsew")
+        HomeFrame(master).grid(row=0, column=1, columnspan=9, padx=20, pady=20, sticky="nsew")
 
-        bottomFrame = customtkinter.CTkFrame(master)
-        bottomFrame.grid(row=0, column=0, columnspan=1, padx=20, pady=20, sticky="nsew")
+        sideBarFrame = customtkinter.CTkFrame(master)
+        sideBarFrame.grid(row=0, column=0, columnspan=1, padx=20, pady=20, sticky="nsew")
 
-        label = customtkinter.CTkLabel(bottomFrame, text="Valorant Headhunter")
-        label.pack(padx="10", pady="10")
-
-        switch = customtkinter.CTkButton(bottomFrame, text="Home", command=lambda: self.switchFrame("Home"))
-        switch.pack(padx="10", pady="10")
-
-        switch = customtkinter.CTkButton(bottomFrame, text="External Pick", command=lambda: self.switchFrame("ExternalPick"))
-        switch.pack(padx="10", pady="10")
-
-        switch = customtkinter.CTkButton(bottomFrame, text="Support", command=lambda: self.switchFrame("Support"))
-        switch.pack(padx="10", pady="10")
+        customtkinter.CTkButton(sideBarFrame, text="Home", command=lambda: self.switchFrame("Home")).pack(padx="10", pady="10")
+        customtkinter.CTkButton(sideBarFrame, text="External Pick", command=lambda: self.switchFrame("ExternalPick")).pack(padx="10", pady="10")
+        customtkinter.CTkButton(sideBarFrame, text="Suporte", command=lambda: self.switchFrame("Suporte")).pack(padx="10", pady="10")
 
     def switchFrame(self, ID):
-        IDs = {"Home": 0, "ExternalPick": 1, "Support": 2}
+        IDs = {"Home": 0, "ExternalPick": 1, "Suporte": 2}
         if ID in IDs.keys():
-            IDf = IDs.get(ID)
+            ID = IDs.get(ID)
+
         self.frameList[self.index].forget()
-        self.index = IDf
+        self.index = ID
         self.frameList[self.index].tkraise()
         self.frameList[self.index].grid(row=0, column=1, columnspan=9, padx=20, pady=20, sticky="nsew")
